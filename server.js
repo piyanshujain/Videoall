@@ -5,6 +5,7 @@ const express = require('express'),
 
 
 app.set('view engine' , 'ejs');
+app.use(express.static('public'));
 app.get('/', (req,res)=>{
   var id=uuidv4();
   res.redirect('/$'+id);
