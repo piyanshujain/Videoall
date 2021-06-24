@@ -107,3 +107,11 @@ overflow-y: scroll;  /*So that messages scroll and do not move out of container*
   color: white;
   list-style: none;
 }
+
+.unmute{
+  color: red;
+}
+
+.stop{
+  color: red;
+}

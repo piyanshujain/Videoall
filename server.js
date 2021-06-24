@@ -8,22 +8,20 @@ const express = require('express'),
         debug: true
       }) 
 
+app.set('view engine' , 'ejs');
+app.use(express.static('public'));
+app.use('/peerjs' , peerServer);
 
-      app.set('view engine' , 'ejs');
-      app.use(express.static('public'));
-      app.use('/peerjs' , peerServer);
-
-      
 app.get('/', (req,res)=>{
   var id=uuidv4();
-  res.redirect('/$'+id);
+ // res.redirect('/$'+id);
+ res.render('index', {id :id});
 })
 
 
 app.get('/:room' , (req, res)=>{
   res.render('room' , { roomId:req.params.room});
 })
-
 
 io.on('connection' , socket=>{
   socket.on('join-room' , (roomId , userId)=>{
@@ -35,6 +33,5 @@ io.on('connection' , socket=>{
     })
   })
 })
-
 
       server.listen(3030);

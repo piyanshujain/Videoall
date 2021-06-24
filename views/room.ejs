@@ -26,18 +26,17 @@
           </div>
 
         <div class="main__controls__block">
-          <div  class="main__controls__button main__mute__button">
+          <div onclick="muteUnmute()" class="main__controls__button main__mute__button">
             <i class="fas fa-microphone"></i>
             <span>Mute</span>
           </div>
-          <div  class="main__controls__button main__video__button">
+          <div onclick="playStop()" class="main__controls__button main__video__button">
             <i class="fas fa-video"></i>
             <span>Video</span>
           </div>
-          <div class="main__controls__button">
-            
-            <span class="leave_meeting">Leave Meeting</span>
-          </div>
+          <div onclick="leavemeet()" class="main__controls__button">
+            <span class="leave_meeting">Leave</span>
+         </div>
          
         </div>
       </div>

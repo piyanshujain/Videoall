@@ -37,7 +37,7 @@ call.on('stream' , userVideoStream =>{
 
   $('html').keydown((e) =>{
     if(e.which==13 && text.val().length!==0){
-      console.log(text)
+      //console.log(text)
       socket.emit('message' , text.val());
       text.val('')
     }
@@ -86,4 +86,62 @@ call.on('stream' , userVideoStream =>{
 const scrollToBottom=()=>{
   var d=$('.main__chat__window');
   d.scrollTop(d.prop("scrollHeight"));
+}
+
+//To Mute and Unmute your Audio
+const muteUnmute=()=>{
+  const enabled=myVideoStream.getAudioTracks()[0].enabled;  //here [0] represents your own audio
+  if(enabled){
+    myVideoStream.getAudioTracks()[0].enabled = false;
+    setUnmuteButton();
+  }else{
+    setMuteButton();
+    myVideoStream.getAudioTracks()[0].enabled = true;
+  }
+}
+
+const setMuteButton=()=>{
+  const html=`
+  <i class="fas fa-microphone"></i>
+  <span>Mute</span>
+`
+document.querySelector('.main__mute__button').innerHTML=html;
+}
+
+
+
+const setUnmuteButton=()=>{
+  const html=`
+  <i class="unmute fas fa-microphone-slash"></i>
+  <span>Unmute</span>
+`
+document.querySelector('.main__mute__button').innerHTML=html;
+}
+
+
+const playStop=()=>{
+  let enabled = myVideoStream.getVideoTracks()[0].enabled;
+  if(enabled){
+    myVideoStream.getVideoTracks()[0].enabled = false;
+    setPlayVideo()
+  }else{
+    setStopVideo()
+    myVideoStream.getVideoTracks()[0].enabled = true;
+  }
+}
+
+const setStopVideo=()=>{
+  const html=`<i class="fas fa-video"></i>
+  <span>Stop Video</span>`
+  document.querySelector('.main__video__button').innerHTML = html;
+}
+
+const setPlayVideo=()=>{
+  const html=`<i class=" stop fas fa-video-slash"></i>
+  <span>Video</span>`
+  document.querySelector('.main__video__button').innerHTML = html;
+}
+
+const leavemeet=()=>{
+  window.location.href = "/";
 }
