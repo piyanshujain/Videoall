@@ -14,7 +14,6 @@ app.use('/peerjs' , peerServer);
 
 app.get('/', (req,res)=>{
   var id=uuidv4();
- // res.redirect('/$'+id);
  res.render('index', {id :id});
 })
 
@@ -31,7 +30,18 @@ io.on('connection' , socket=>{
     socket.on('message' , message=>{
       io.to(roomId).emit('createMessage', message)
     })
+    socket.on('disconnect', () => {
+      socket.to(roomId).emit('user-disconnected', userId)
+    })
+    socket.on('drawn',(data)=> {
+      socket.to(roomId).emit('will_draw', data)
+   })
+   
+   socket.on('clear_wb', ()=>{
+     socket.to(roomId).emit('clear_wb')
+   })
+
   })
 })
 
-      server.listen(3030);
+      server.listen(process.env.PORT||3030);

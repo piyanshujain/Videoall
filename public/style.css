@@ -3,15 +3,17 @@ body{
   padding: 0;
 }
 
-#video-grid{
-  display : flex;
-  justify-content : center;
-}
 
+#video-grid{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 video{
-  height:300px;
-  width:300px;
+  height: 300px;
+  width: 400px;
   object-fit: cover;
+  padding: 8px;
 }
 
 .main{
@@ -42,7 +44,6 @@ video{
   background-color: gray;
   color: aliceblue;
   padding: 5px;
-  justify-content: right;
   justify-content: space-between;
 }
 
@@ -114,4 +115,45 @@ overflow-y: scroll;  /*So that messages scroll and do not move out of container*
 
 .stop{
   color: red;
+}
+.leave{
+  color: red;
+}
+
+
+
+.whiteboard__controls{
+  
+  flex-direction: column;
+  display: flex;
+  cursor: pointer;
+}
+.drawarea{
+  flex-direction: row;
+}
+.wb__up{
+  display: flex;
+}
+.whiteboard{
+  height: auto;
+  display: flex;
+  justify-content : center;
+  display: none;
+  border: 3px solid #f1f1f1;
+}
+.whiteboard__colors{
+  flex-direction: column;
+  display: flex;
+  cursor: pointer;
+  background-color: white;
+}
+.colors{
+  display: flex;
+
+  justify-content: space-between;
+}
+.wb__color{
+  flex-direction: column;
+  width:20px;
+  height:10px;
 }
