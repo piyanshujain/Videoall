@@ -7,7 +7,7 @@ const express = require('express'),
       const peerServer = ExpressPeerServer(server , {
         debug: true
       }) 
-      const mongoose              = require("mongoose"),
+      const mongoose        = require("mongoose"),
       LocalStrategy         = require("passport-local"),
       passportLocalMongoose = require("passport-local-mongoose"),
       expressSanitizer      = require("express-sanitizer"),
@@ -22,7 +22,7 @@ const express = require('express'),
     .catch(error => console.log(error.message));
 
     app.use(require("express-session")({
-      secret: "Rusty is the best and cutest dog in the world",
+      secret: "Teams-Clone-App",
       resave: false,
       saveUninitialized: false
   }));
@@ -53,6 +53,22 @@ app.get('/', (req,res)=>{
 })
 
 
+
+//Routes for authentication
+app.get("/register", function(req, res){
+  res.render("register");
+});
+
+app.get("/login", function(req, res){
+  res.render("login");
+});
+
+app.get("/logout", function(req, res){
+   req.logout();
+   res.redirect("/");
+});
+
+//route for entering a new room
 app.get('/:room' , (req, res)=>{
   res.render('room' , { roomId:req.params.room});
 })
