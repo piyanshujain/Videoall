@@ -7,6 +7,41 @@ const express = require('express'),
       const peerServer = ExpressPeerServer(server , {
         debug: true
       }) 
+      const mongoose              = require("mongoose"),
+      LocalStrategy         = require("passport-local"),
+      passportLocalMongoose = require("passport-local-mongoose"),
+      expressSanitizer      = require("express-sanitizer"),
+      User                  = require("./models/user"),
+      passport              = require('passport');
+
+  mongoose.connect("mongodb://localhost/teams-clone",  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+    .then(() => console.log('Connected to DB!'))
+    .catch(error => console.log(error.message));
+
+    app.use(require("express-session")({
+      secret: "Rusty is the best and cutest dog in the world",
+      resave: false,
+      saveUninitialized: false
+  }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+app.use(function(req, res, next){
+  res.locals.currentUser = req.user;
+  next();
+});
+app.use(expressSanitizer());
 
 app.set('view engine' , 'ejs');
 app.use(express.static('public'));
