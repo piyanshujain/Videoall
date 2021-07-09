@@ -10,6 +10,26 @@
         <link href="styles_index.css" rel="stylesheet" />
     </head>
     <body>
+      <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">YelpCamp</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                
+                <div class="navbar-nav ml-auto">
+                    <!-- <% if(!currentUser) {%> -->
+                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" href="/register">Register</a>
+                    <!-- <% } else {%> -->
+                    <a class="nav-link" href="/logout">Logout</a>
+                    <!-- <% } %> -->
+                </div>
+            </div>
+        </div>
+    </nav>
           <header class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/wfh8dDlNFOk/1600x900')">
             <div class="text-center my-5">
                 <img class="rounded-circle img-circle" style="padding-top: 20px;" src="https://play-lh.googleusercontent.com/jKU64njy8urP89V1O63eJxMtvWjDGETPlHVIhDv9WZAYzsSxRWyWZkUlBJZj_HbkHA" alt="Teams" />

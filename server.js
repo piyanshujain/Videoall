@@ -9,10 +9,13 @@ const express = require('express'),
       }) 
       const mongoose        = require("mongoose"),
       LocalStrategy         = require("passport-local"),
+      bodyParser            = require("body-parser"),
       passportLocalMongoose = require("passport-local-mongoose"),
       expressSanitizer      = require("express-sanitizer"),
       User                  = require("./models/user"),
+      catchAsync = require('./utils/catchAsync'),
       passport              = require('passport');
+      const flash = require('connect-flash');
 
   mongoose.connect("mongodb://localhost/teams-clone",  {
     useNewUrlParser: true,
@@ -20,13 +23,19 @@ const express = require('express'),
   })
     .then(() => console.log('Connected to DB!'))
     .catch(error => console.log(error.message));
-
+    app.use(flash());
     app.use(require("express-session")({
       secret: "Teams-Clone-App",
       resave: false,
       saveUninitialized: false
   }));
-
+  app.use(function(req, res, next){
+  console.log(req.session)
+     res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+  });
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -37,17 +46,15 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
-app.use(function(req, res, next){
-  res.locals.currentUser = req.user;
-  next();
-});
-app.use(expressSanitizer());
 
+app.use(expressSanitizer());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.set('view engine' , 'ejs');
 app.use(express.static('public'));
 app.use('/peerjs' , peerServer);
 
-app.get('/', (req,res)=>{
+app.get('/', function(req,res){
   var id=uuidv4();
  res.render('index', {id :id});
 })
@@ -58,19 +65,44 @@ app.get('/', (req,res)=>{
 app.get("/register", function(req, res){
   res.render("register");
 });
+app.post('/register', catchAsync(async (req, res, next) => {
+  try {
+      const { email, username, password } = req.body;
+      const user = new User({ email, username });
+      const registeredUser = await User.register(user, password);
+      req.login(registeredUser, err => {
+          if (err) return next(err);
+          req.flash('success', 'Welcome!');
+          console.log(registeredUser);
+          res.redirect('/');
+      })
+  } catch (e) {
+      req.flash('error', e.message);
+      res.redirect('register');
+  }
+}));
 
-app.get("/login", function(req, res){
-  res.render("login");
-});
+app.get('/login', (req, res) => {
+  res.render('login');
+})
 
-app.get("/logout", function(req, res){
-   req.logout();
-   res.redirect("/");
-});
+app.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
+  req.flash('success', 'welcome back!');
+  const redirectUrl = req.session.returnTo || '/';
+  delete req.session.returnTo;
+  res.redirect(redirectUrl);
+})
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  req.flash('success', "Goodbye!");
+  console.log("logged out")
+  res.redirect('/');
+})
 
 //route for entering a new room
-app.get('/:room' , (req, res)=>{
-  res.render('room' , { roomId:req.params.room});
+app.get('/:room' , function(req, res){
+  res.render('room' , { roomId:req.params.room  });
 })
 
 io.on('connection' , socket=>{
