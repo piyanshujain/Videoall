@@ -1,8 +1,7 @@
 const express = require('express'),
       app     = express(),
       server  = require('http').Server(app);
-      const {v4 : uuidv4} = require('uuid');
-      const io = require('socket.io')(server)
+      const io = require('socket.io')(server);
       const { ExpressPeerServer } = require('peer');
       const peerServer = ExpressPeerServer(server , {
         debug: true
@@ -12,7 +11,9 @@ const express = require('express'),
       bodyParser            = require("body-parser"),
       passportLocalMongoose = require("passport-local-mongoose"),
       expressSanitizer      = require("express-sanitizer"),
+      Room                  = require("./models/room-model"),
       User                  = require("./models/user"),
+      Chat               = require("./models/chat"),
       catchAsync = require('./utils/catchAsync'),
       passport              = require('passport');
       const flash = require('connect-flash');
@@ -30,7 +31,7 @@ const express = require('express'),
       saveUninitialized: false
   }));
   app.use(function(req, res, next){
-  console.log(req.session)
+  //console.log(req.session)
      res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
@@ -55,8 +56,7 @@ app.use(express.static('public'));
 app.use('/peerjs' , peerServer);
 
 app.get('/', function(req,res){
-  var id=uuidv4();
- res.render('index', {id :id});
+ res.render('index');
 })
 
 
@@ -101,6 +101,33 @@ app.get('/logout', (req, res) => {
 })
 
 //route for entering a new room
+
+app.post('/new-room',function(req,res){
+var name = req.body.name;
+var formData = {title: name};
+  Room.create(formData, function(err, newRoom){
+      console.log(newRoom);
+     if(err){
+       
+         res.render("/");
+     } else {
+         res.redirect("/room/"+newRoom._id);
+     }
+  });
+})
+
+app.get('/room/:room' , function(req, res){
+  Room.findById(req.params.room).populate("chats").exec(function(err, room){
+    if(err){
+      console.log(err);
+        res.redirect("/");
+    } else {
+        res.render("chat-room", {room: room});
+       // res.render('chat-room' , { roomId:req.params.room  });
+    }
+ });
+  
+})
 app.get('/:room' , function(req, res){
   res.render('room' , { roomId:req.params.room  });
 })

@@ -12,7 +12,7 @@
     <body>
       <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">YelpCamp</a>
+            <a class="navbar-brand" href="#">Teams</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -20,12 +20,12 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 
                 <div class="navbar-nav ml-auto">
-                    <!-- <% if(!currentUser) {%> -->
+                     <% if(!currentUser) {%> 
                     <a class="nav-link" href="/login">Login</a>
                     <a class="nav-link" href="/register">Register</a>
-                    <!-- <% } else {%> -->
+                     <% } else {%> 
                     <a class="nav-link" href="/logout">Logout</a>
-                    <!-- <% } %> -->
+                 <% } %> 
                 </div>
             </div>
         </div>
@@ -34,7 +34,10 @@
             <div class="text-center my-5">
                 <img class="rounded-circle img-circle" style="padding-top: 20px;" src="https://play-lh.googleusercontent.com/jKU64njy8urP89V1O63eJxMtvWjDGETPlHVIhDv9WZAYzsSxRWyWZkUlBJZj_HbkHA" alt="Teams" />
                 <h1 class="text-white fs-3 fw-bolder">Teams Clone App</h1>
-                <h4 class="link mb-0"> <a href="/<%=id%>">Start an instant meeting</a></h4>
+                <form action="/new-room" method="POST">
+                    <input type="text" placeholder="Enter a title for the meeting" name="name" required>
+                     <button>Create the Room</button>
+                </form>
             </div>
         </header>
 
