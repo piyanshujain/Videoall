@@ -8,6 +8,13 @@ var roomSchema = new mongoose.Schema({
          ref: "Chat"
       }
    ],
+   attendees:[
+      {
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"User",
+      unique:true
+      }
+   ],
     created:  {type: Date, default: Date.now}
 });
 

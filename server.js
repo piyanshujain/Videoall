@@ -17,6 +17,7 @@ const express = require('express'),
       catchAsync = require('./utils/catchAsync'),
       passport              = require('passport');
       const flash = require('connect-flash');
+      const {v4 : uuidv4} = require('uuid');
 
   mongoose.connect("mongodb://localhost/teams-clone",  {
     useNewUrlParser: true,
@@ -111,35 +112,132 @@ var formData = {title: name};
        
          res.render("/");
      } else {
-         res.redirect("/room/"+newRoom._id);
+         res.redirect("/room/"+newRoom._id+"/chat");
      }
   });
 })
 
-app.get('/room/:room' , function(req, res){
-  Room.findById(req.params.room).populate("chats").exec(function(err, room){
+app.get('/room/:room' ,isLoggedIn, function(req, res){
+  var id=uuidv4();
+  
+  Room.findById(req.params.room).populate("chats").populate("attendees").exec(function(err, room){
     if(err){
       console.log(err);
         res.redirect("/");
     } else {
-        res.render("chat-room", {room: room});
+      var attendees=req.user;
+            room.attendees.push(attendees);
+            room.save();
+        res.render("chat-room", {room: room , chat_id : id});
        // res.render('chat-room' , { roomId:req.params.room  });
     }
  });
   
 })
-app.get('/:room' , function(req, res){
-  res.render('room' , { roomId:req.params.room  });
+
+app.get('/room/:id/chat',isLoggedIn, (req, res) => {
+  Room.findById(req.params.id, function(err, room){
+    if(err){
+        console.log(err);
+        res.redirect("/room"+req.params.id);
+    } else {
+            var attendees=req.user;
+            room.attendees.push(attendees);
+            room.save();
+            console.log(room);
+            res.redirect('/room/' + room._id);
+        
+     
+    }
+});
+
+  //res.redirect('/room/'+req.params.id);
 })
+app.post("/room/:id/chat",isLoggedIn,function(req, res){
+  Room.findById(req.params.id, function(err, room){
+      if(err){
+          console.log(err);
+          res.redirect("/room"+req.params.id);
+      } else {
+       Chat.create({text: req.body.text}, function(err, chat){
+          if(err){
+              console.log(err);
+          } else {
+            chat.author.id = req.user._id;
+             chat.author.username = req.user.username;
+             chat.save();
+              room.chats.push(chat);
+              room.save();
+              console.log(room);
+              res.redirect('/room/' + room._id);
+          }
+       });
+      }
+  });
+
+});
+var user_c={};
+app.get('/:room' , function(req, res){
+  // console.log(req.user);
+  // console.log(req.user.username);
+  if(req.user){
+    user_c =req.user;
+  }else{
+    user_c={
+      username:"guest-user",
+      _id:"60e999b4503f63361cc378dd"
+    }
+  }
+  res.render('room' , { roomId:req.params.room , user_c: user_c});
+})
+
+function isLoggedIn(req, res, next){
+  if(req.isAuthenticated()){
+      return next();
+  }
+  req.session.returnTo = req.originalUrl
+  res.redirect("/login");
+}
 
 io.on('connection' , socket=>{
   socket.on('join-room' , (roomId , userId)=>{
     console.log("joined room");
     socket.join(roomId);
     socket.to(roomId).emit('user-connected' , userId);
-    socket.on('message' , message=>{
-      io.to(roomId).emit('createMessage', message)
+
+
+    socket.on('message' ,data=>{
+
+      Room.findById(roomId, function(err, room){
+        if(err){
+            console.log(err);
+            res.redirect("/room"+req.params.id);
+        } else {
+         Chat.create({text: data.message}, function(err, chat){
+            if(err){
+                console.log(err);
+            } else {
+             
+              chat.author.id = data.user_id;
+               chat.author.username = data.username;
+              
+               chat.save();
+                room.chats.push(chat);
+                room.save().then(()=>{
+                  io.to(roomId).emit('createMessage', data)
+                })
+                //console.log(room);
+               // res.redirect('/room/' + room._id);
+            }
+         });
+        }
+    });
+
+
+     
     })
+
+
     socket.on('disconnect', () => {
       socket.to(roomId).emit('user-disconnected', userId)
     })

@@ -41,15 +41,21 @@ call.on('stream' , userVideoStream =>{
   
   $('html').keydown((e) =>{
     if(e.which==13 && text.val().length!==0){
-      socket.emit('message' , text.val());
+      data={
+        message:text.val(),
+        username:username,
+        user_id:user_id
+      }
+      socket.emit('message' , data);
       text.val('')
    
     }
   })
   
  
-  socket.on('createMessage' , message=>{
-    $('.messages').append('<li class="message"><b>user</b><br/>  </li>'+message)
+  socket.on('createMessage' , data=>{
+    // $('.messages').append('<li class="message"><b><%=username%></b><br/>  </li>'+message)
+    $('.messages').append(data.username+" "+data.message+"\n")
     scrollToBottom()
    
   })

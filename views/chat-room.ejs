@@ -1,3 +1,43 @@
 <h1>Welcome to <%=room.title%></h1>
 <h1>Your Chat Room Id is <%=room.id%></h1>
+
+<% room.chats.forEach(function(chat){ %>
+    <div class="row">
+        <div class="col-md-12">
+            <strong><%= chat.author.username %></strong>
+            <span><%= chat.created.toDateString() %></span>
+            <p>
+                <%= chat.text %>
+            </p>
+        </div>
+    </div>
+<% }) %>
+<div class="container">
+    <div class="row">
+        <h1 style="text-align: center">Add a message to <%= room.title %></h1>
+        <div style="width: 30%; margin: 25px auto;">
+            <form action="/room/<%= room._id %>/chat" method="POST">
+                <div class="form-group">
+                    <input class="form-control" type="text" name="text" placeholder="text">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-primary btn-block">Send</button>
+                </div>
+            </form>
+            <a href="/">Go Back</a> 
+        </div>
+    </div>
+</div>
+
+<% room.attendees.forEach(function(useri){ %>
+    <div class="row">
+        <div class="col-md-12">
+            <strong><%= useri.username %></strong>
+            <span><%= useri.email %></span>
+          
+        </div>
+    </div>
+<% }) %>
+
+
 <h2> <a href="/<%=room.id%>">head to the video call</a> </h2>
