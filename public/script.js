@@ -9,7 +9,7 @@ const peers = {}
 var peer = new Peer(undefined ,{
   path: '/peerjs',
   host: '/' ,
-  port: 3030
+  port: 443
 } )
 
 navigator.mediaDevices.getUserMedia({
@@ -155,6 +155,9 @@ const setPlayVideo=()=>{
 const leavemeet=()=>{
   window.location.href = "/";
 }
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> f489058fced7ff7427efdfe52c2f90e19d95c6b5
