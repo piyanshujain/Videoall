@@ -74,7 +74,7 @@ app.post('/register', catchAsync(async (req, res, next) => {
       req.login(registeredUser, err => {
           if (err) return next(err);
           req.flash('success', 'Welcome!');
-          console.log(registeredUser);
+         // console.log(registeredUser);
           res.redirect('/');
       })
   } catch (e) {
@@ -107,7 +107,7 @@ app.post('/new-room',function(req,res){
 var name = req.body.name;
 var formData = {title: name};
   Room.create(formData, function(err, newRoom){
-      console.log(newRoom);
+     // console.log(newRoom);
      if(err){
        
          res.render("/");
@@ -145,18 +145,34 @@ app.get('/room/:room' ,isLoggedIn, function(req, res){
     } else {
       var attendees=req.user;
       var i=attendees._id;
-   //   if(!room.find({attendees:{$elemMatch:{_id:i}}})){
+    console.log("your id=  "+i);
+    var flag=0;
+    room.attendees.forEach(function(id){
+      if(i==id._id){
+        flag=1;
+      }
+    })
+     if(flag==0){
         room.attendees.push(attendees);
         room.save();
+     }
      // }
      User.findById(i,function(err,p){
       if(err){
         console.log(err);
         res.redirect("room"+req.params.id)
       }else{
+        var sa=0;
+        p.rooms.forEach(function(rm){
+          if(rm._id==room.id){
+            sa=1;
+          }
+        })
+        if(sa==0){
         p.rooms.push(room);
-        console.log(p);
+      //  console.log(p);
         p.save();
+        }
       }
     })
         res.render("chat-room", {room: room , chat_id : id});
@@ -174,19 +190,33 @@ app.get('/room/:id/chat',isLoggedIn, (req, res) => {
     } else {
             var attendees=req.user;
             var i=attendees._id;
-           // if(!Room.find({attendees:{$elemMatch:{_id:i}}})){
-              room.attendees.push(attendees);
-              room.save();
-           // }
-            console.log(room);
+            var flag=0;
+            room.attendees.forEach(function(id){
+              if(i==id._id){
+                flag=1;
+              }
+            })
+            if(flag==0){
+               room.attendees.push(attendees);
+               room.save();
+            }
+           // console.log(room);
             User.findById(i,function(err,p){
               if(err){
                 console.log(err);
                 res.redirect("room"+req.params.id)
               }else{
-                p.rooms.push(room);
-                console.log(p);
-                p.save();
+                var sa=0;
+        p.rooms.forEach(function(rm){
+          if(rm._id==room.id){
+            sa=1;
+          }
+        })
+        if(sa==0){
+        p.rooms.push(room);
+      //  console.log(p);
+        p.save();
+        }
               }
             })
             res.redirect('/room/' + room._id);
@@ -212,7 +242,7 @@ app.post("/room/:id/chat",isLoggedIn,function(req, res){
              chat.save();
               room.chats.push(chat);
               room.save();
-              console.log(room);
+             // console.log(room);
               res.redirect('/room/' + room._id);
           }
        });
