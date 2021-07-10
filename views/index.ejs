@@ -24,7 +24,7 @@
                     <a class="nav-link" href="/login">Login</a>
                     <a class="nav-link" href="/register">Register</a>
                      <% }%>
-                     <% if(currentUser){%> 
+                     <% if(!currentUser){%> 
                     <a class="nav-link" href="/logout">Logout</a>
                  <% } %> 
                 </div>
@@ -39,6 +39,9 @@
                     <input type="text" placeholder="Enter a title for the meeting" name="name" required>
                      <button>Create the Room</button>
                 </form>
+                <% if(!currentUser){%> 
+                <h2><a href="/my-rooms"> view all past rooms</a></h2>
+                <% } %> 
             </div>
         </header>
 

@@ -19,7 +19,7 @@ const express = require('express'),
       const flash = require('connect-flash');
       const {v4 : uuidv4} = require('uuid');
 
-  mongoose.connect("mongodb://localhost/teams-clone",  {
+  mongoose.connect("mongodb+srv://Piyanshu:12348765@video-call-app.otsmf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",  {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -112,10 +112,28 @@ var formData = {title: name};
        
          res.render("/");
      } else {
-         res.redirect("/room/"+newRoom._id+"/chat");
+         res.redirect("/room/"+newRoom._id);
      }
   });
 })
+
+
+
+app.get('/my-rooms',isLoggedIn, (req, res) => {
+  var m=req.user;
+  // var i=attendees._id;
+  // const rooms = await Room.find({attendees:{$elemMatch:{_id:i}}});
+  //console.log(rooms)
+   User.findById(m._id).populate("rooms").exec(function(err,me){
+    if(err){
+      console.log(err);
+      res.redirect('/');
+    }else{
+      res.render('all-rooms', { me:me })
+    }
+  })
+  
+});
 
 app.get('/room/:room' ,isLoggedIn, function(req, res){
   var id=uuidv4();
@@ -126,8 +144,21 @@ app.get('/room/:room' ,isLoggedIn, function(req, res){
         res.redirect("/");
     } else {
       var attendees=req.user;
-            room.attendees.push(attendees);
-            room.save();
+      var i=attendees._id;
+   //   if(!room.find({attendees:{$elemMatch:{_id:i}}})){
+        room.attendees.push(attendees);
+        room.save();
+     // }
+     User.findById(i,function(err,p){
+      if(err){
+        console.log(err);
+        res.redirect("room"+req.params.id)
+      }else{
+        p.rooms.push(room);
+        console.log(p);
+        p.save();
+      }
+    })
         res.render("chat-room", {room: room , chat_id : id});
        // res.render('chat-room' , { roomId:req.params.room  });
     }
@@ -142,9 +173,22 @@ app.get('/room/:id/chat',isLoggedIn, (req, res) => {
         res.redirect("/room"+req.params.id);
     } else {
             var attendees=req.user;
-            room.attendees.push(attendees);
-            room.save();
+            var i=attendees._id;
+           // if(!Room.find({attendees:{$elemMatch:{_id:i}}})){
+              room.attendees.push(attendees);
+              room.save();
+           // }
             console.log(room);
+            User.findById(i,function(err,p){
+              if(err){
+                console.log(err);
+                res.redirect("room"+req.params.id)
+              }else{
+                p.rooms.push(room);
+                console.log(p);
+                p.save();
+              }
+            })
             res.redirect('/room/' + room._id);
         
      

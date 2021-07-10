@@ -9,7 +9,7 @@ const peers = {}
 var peer = new Peer(undefined ,{
   path: '/peerjs',
   host: '/' ,
-  port: 3030
+  port: 443
 } )
 
 navigator.mediaDevices.getUserMedia({
@@ -18,6 +18,7 @@ navigator.mediaDevices.getUserMedia({
 }).then(stream => {
   myVideoStream = stream;
  addVideoStream(myVideo, stream);
+  addVideoStream(myVideo, stream);
 peer.on('call', call=>{
   call.answer(stream)
 const video = document.createElement('video')
@@ -41,7 +42,7 @@ call.on('stream' , userVideoStream =>{
   
   $('html').keydown((e) =>{
     if(e.which==13 && text.val().length!==0){
-      data={
+      var data={
         message:text.val(),
         username:username,
         user_id:user_id
@@ -53,9 +54,8 @@ call.on('stream' , userVideoStream =>{
   })
   
  
-  socket.on('createMessage' , data=>{
-    // $('.messages').append('<li class="message"><b><%=username%></b><br/>  </li>'+message)
-    $('.messages').append(data.username+" "+data.message+"\n")
+  socket.on('createMessage' ,data=>{
+    $('.messages').append(data.username+"  "+data.message)
     scrollToBottom()
    
   })

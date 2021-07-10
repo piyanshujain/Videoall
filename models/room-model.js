@@ -9,10 +9,9 @@ var roomSchema = new mongoose.Schema({
       }
    ],
    attendees:[
-      {
+     {
       type: mongoose.Schema.Types.ObjectId,
       ref:"User",
-      unique:true
       }
    ],
     created:  {type: Date, default: Date.now}

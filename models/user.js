@@ -7,7 +7,13 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true
-    }
+    },
+    rooms:[
+        {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Room"
+     }
+    ]
 });
 
 UserSchema.plugin(passportLocalMongoose);
