@@ -158,7 +158,7 @@ const setPlayVideo=()=>{
 }
 
 const leavemeet=()=>{
-  window.location.href = "/";
+  window.location.href = "/room/"+ROOM_ID;
 }
 
 

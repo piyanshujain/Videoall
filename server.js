@@ -33,11 +33,14 @@ const express = require('express'),
   }));
   app.use(function(req, res, next){
   //console.log(req.session)
-     res.locals.currentUser = req.user;
+    res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
   });
+  mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -57,7 +60,14 @@ app.use(express.static('public'));
 app.use('/peerjs' , peerServer);
 
 app.get('/', function(req,res){
- res.render('index');
+  var flag=0;
+  var username="Guest-User"
+  if(req.user){
+    flag=1;
+    username=req.user.username;
+  }
+  var id=uuidv4();
+ res.render('index',{flag,username,id});
 })
 
 
@@ -136,7 +146,7 @@ app.get('/my-rooms',isLoggedIn, (req, res) => {
 });
 
 app.get('/room/:room' ,isLoggedIn, function(req, res){
-  var id=uuidv4();
+ var id=req.params.room;
   
   Room.findById(req.params.room).populate("chats").populate("attendees").exec(function(err, room){
     if(err){
@@ -145,7 +155,6 @@ app.get('/room/:room' ,isLoggedIn, function(req, res){
     } else {
       var attendees=req.user;
       var i=attendees._id;
-    console.log("your id=  "+i);
     var flag=0;
     room.attendees.forEach(function(id){
       if(i==id._id){
