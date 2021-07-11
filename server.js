@@ -70,7 +70,9 @@ app.get('/', function(req,res){
  res.render('index',{flag,username,id});
 })
 
-
+app.get("/r", function(req, res){
+  res.render("test");
+});
 
 //Routes for authentication
 app.get("/register", function(req, res){
@@ -184,8 +186,20 @@ app.get('/room/:room' ,isLoggedIn, function(req, res){
         }
       }
     })
-        res.render("chat-room", {room: room , chat_id : id});
-       // res.render('chat-room' , { roomId:req.params.room  });
+  
+    var m=req.user;
+  // var i=attendees._id;
+  // const rooms = await Room.find({attendees:{$elemMatch:{_id:i}}});
+  //console.log(rooms)
+   User.findById(m._id).populate("rooms").exec(function(err,me){
+    if(err){
+      console.log(err);
+      res.redirect('/');
+    }else{
+      res.render("chat-room", {room: room  , me});
+    }
+  })
+
     }
  });
   

@@ -1,43 +1,140 @@
-<h1>Welcome to <%=room.title%></h1>
-<h1>Your Chat Room Id is <%=room.id%></h1>
+<html>
+<head>
+    <link rel="stylesheet" href="/styles_chat-room.css">
+   <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- Optional theme -->
+<script src="https://kit.fontawesome.com/c939d0e917.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script>
+    var room_i="<%=room.id%>";
+</script>
+</head>
 
-<% room.chats.forEach(function(chat){ %>
-    <div class="row">
-        <div class="col-md-12">
-            <strong><%= chat.author.username %></strong>
-            <span><%= chat.created.toDateString() %></span>
-            <p>
-                <%= chat.text %>
-            </p>
-        </div>
-    </div>
-<% }) %>
+<body>
+      
 <div class="container">
-    <div class="row">
-        <h1 style="text-align: center">Add a message to <%= room.title %></h1>
-        <div style="width: 30%; margin: 25px auto;">
-            <form action="/room/<%= room._id %>/chat" method="POST">
-                <div class="form-group">
-                    <input class="form-control" type="text" name="text" placeholder="text">
+	<div class="row no-gutters">
+	  <div class="col-md-4 border-right">
+		<div style="color: white; text-align: center;" class="settings-tray">
+            <%=me.username%>
+		   <span class="settings-tray--right">
+			<!-- <i class="material-icons">cached</i>
+			<i class="material-icons">message</i>
+			<i class="material-icons">menu</i> -->
+		  </span>
+		</div>
+		
+        <div class="roomie">
+
+
+		
+        <% me.rooms.forEach(function(room){ %>
+            
+            <a href="/room/<%= room._id %>">
+            <div class="friend-drawer friend-drawer--onhover">
+                <div class="text">
+                  <p > <strong><%= room.title %></strong></p>
                 </div>
-                <div class="form-group">
-                    <button class="btn btn-lg btn-primary btn-block">Send</button>
+                <span class="time text-muted small"> <%= room.created.toDateString() %></span>
+              </div>
+              </a>
+              <hr>
+        <% }) %>
+
+
+
+    </div>
+	  </div>
+
+      <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <p>Participants</p>
+        <% room.attendees.forEach(function(useri){ %>
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong><%= useri.username %></strong>
+                        <span><%= useri.email %></span>
+                    
+                    </div>
                 </div>
+            <% }) %>
+      </div>
+	  <div class="col-md-8">
+		<div class="settings-tray">
+			<div class="friend-drawer no-gutters friend-drawer--grey">
+			<div class="text">
+			  <h6 style="color: white;" class="text-muted"><%=room.created.toDateString()%></h6>
+			  <p style="color: white;" ><%=room.title%></p>
+			</div>
+			<span class="settings-tray--right">
+                  <i onclick="openNav()" class="fas fa-user-friends"></i>
+                 <span> <i onclick="startCall()"  class="fas fa-video"></i></span>
+			  <!-- <i class="material-icons">cached</i>
+			  <i class="material-icons">message</i>
+			  <i class="material-icons">menu</i> -->
+			</span>
+		  </div>
+		</div>
+		<div class="chat-panel">
+            <div class="past-chat">
+
+              
+                <% room.chats.forEach(function(chat){ %>
+                   <% if(chat.author.id!=me.id){ %>
+                    <div class="row no-gutters">
+                        <div class="col-md-12">
+                          <div class="chat-bubble ">
+                            <strong><%= chat.author.username %></strong>
+                            <span><%= chat.created.toDateString() %></span>  <%= chat.text %>
+                          </div>
+                        </div>
+                      </div>
+                      <%}else{%>
+
+                      <div class="row no-gutters">
+                        <div class="col-md-12 offset-md-9">
+                          <div class="chat-bubble chat-bubble--right">
+                            <span><%= chat.created.toDateString() %></span>  <%= chat.text %>
+                          </div>
+                        </div>
+                      </div>
+                      <%}%>
+                <% }) %>
+
+		 
+
+
+
+        </div>
+		  <div class="row">
+			<div class="col-12">
+                <form action="/room/<%= room._id %>/chat" method="POST">
+			  <div class="chat-box-tray">
+				<!-- <i class="material-icons">sentiment_very_satisfied</i> -->
+
+               
+                    
+                        <input style="margin-left: 10px ;"  type="text" name="text" placeholder="Send message to the room">
+                    
+                      <button style="align-items: center; border: 0ch;"><i class="fa fa-paper-plane" > </i></button>  
+             
+				<!-- <input type="text" placeholder="Type your message here..."> -->
+				<!-- <i class="material-icons">mic</i> -->
+				
+			  </div>
+                   
             </form>
-            <a href="/">Go Back</a> 
-        </div>
-    </div>
-</div>
-<h2>Participants</h2>
-<% room.attendees.forEach(function(useri){ %>
-    <div class="row">
-        <div class="col-md-12">
-            <strong><%= useri.username %></strong>
-            <span><%= useri.email %></span>
-          
-        </div>
-    </div>
-<% }) %>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
 
-
-<h2> <a href="/<%=room.id%>">head to the video call</a> </h2>
+  </body>
+  </html>
+  <script src="/script_chat-room.js"></script>
+  <!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
