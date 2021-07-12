@@ -42,15 +42,20 @@ call.on('stream' , userVideoStream =>{
   
   $('html').keydown((e) =>{
     if(e.which==13 && text.val().length!==0){
-      socket.emit('message' , text.val());
+      var data={
+        message:text.val(),
+        username:username,
+        user_id:user_id
+      }
+      socket.emit('message' , data);
       text.val('')
    
     }
   })
   
  
-  socket.on('createMessage' , message=>{
-    $('.messages').append('<li class="message"><b>user</b><br/>  </li>'+message)
+  socket.on('createMessage' ,data=>{
+    $('.messages').append('<strong>'+data.username+'</strong>'+'</br>'+data.message+'</br>')
     scrollToBottom()
    
   })
@@ -153,7 +158,7 @@ const setPlayVideo=()=>{
 }
 
 const leavemeet=()=>{
-  window.location.href = "/";
+  window.location.href = "/room/"+ROOM_ID;
 }
 
 
