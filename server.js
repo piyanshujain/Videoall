@@ -130,7 +130,6 @@ var formData = {title: name};
 })
 
 
-
 app.get('/my-rooms',isLoggedIn, (req, res) => {
   var m=req.user;
   // var i=attendees._id;
@@ -196,7 +195,10 @@ app.get('/room/:room' ,isLoggedIn, function(req, res){
       console.log(err);
       res.redirect('/');
     }else{
-      res.render("chat-room", {room: room  , me});
+  
+          res.render("chat-room", {room: room  , me});
+        
+      
     }
   })
 
@@ -285,7 +287,7 @@ app.get('/:room' , function(req, res){
       _id:"60e999b4503f63361cc378dd"
     }
   }
-  res.render('room' , { roomId:req.params.room , user_c: user_c});
+  res.render('room' , { roomId:req.params.room , user_c: user_c });
 })
 
 function isLoggedIn(req, res, next){
@@ -295,6 +297,7 @@ function isLoggedIn(req, res, next){
   req.session.returnTo = req.originalUrl
   res.redirect("/login");
 }
+
 
 io.on('connection' , socket=>{
   socket.on('join-room' , (roomId , userId)=>{
