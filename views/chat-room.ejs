@@ -1,32 +1,33 @@
+<html>
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title><%=room.title%></title>
+  <title><%=room.title%>></title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-  <!-- Template Main CSS File -->
-  <link rel="stylesheet" href="/styles_chat-room.css">  
-  <link href="/styles_index.css" rel="stylesheet">
- <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="/styles_chat-room.css">  
+   <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <!-- Optional theme -->
 <script src="https://kit.fontawesome.com/c939d0e917.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-<!-- Vendor CSS Files -->
-<!-- <link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet"> -->
+  <!-- Vendor CSS Files -->
+<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
 <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet"> 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+
+  <link href="/styles_index.css" rel="stylesheet">
 <script>
   var room_i="<%=room.id%>";
 </script>
 </head>
 
-<body>
+<body id="main-side">
 <header id="header" class="d-flex align-items-center">
   <div class="container d-flex align-items-center justify-content-between">
 
@@ -97,7 +98,7 @@
       <p style="color: white;" ><strong><%=room.title%></strong></p>
     </div>
     <span class="settings-tray--right">
-                <i onclick="openNav()" class="fas fa-user-friends"></i>
+                <i onclick="toggleNav()" class="fas fa-user-friends"></i>
                <span> <i onclick="startCall()"  class="fas fa-video"></i></span>
       <!-- <i class="material-icons">cached</i>
       <i class="material-icons">message</i>
@@ -105,14 +106,14 @@
     </span>
     </div>
   </div>
-  <div id="mySidebar" class="sidebar">
+  <div id="mySlidebar" style="margin-top: 80px !important; text-align: center; overflow: auto;" class="slidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <p>Participants</p>
+    <h4 style="color: white;">Participants</h4>
     <% room.attendees.forEach(function(useri){ %>
             <div class="row">
-                <div class="col-md-12">
-                    <strong><%= useri.username %></strong>
-                    <span><%= useri.email %></span>
+                <div class="col-md-12" style="align-items: center; text-align: center;" >
+                    <strong style="color: white;"><%= useri.username %></strong>
+                    <span style="color: rgb(236, 236, 236);">(<%= useri.email %>)</span>
                 
                 </div>
             </div>
@@ -185,14 +186,17 @@
     
   </div>
 </footer><!-- End Footer -->
+
+
+
+  <!-- Vendor JS Files -->
+  <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Template Main JS File -->
+  <script src="/script_chat-room.js"></script>
+  <script src="/script_index.js"></script>
 </body>
 </html>
-<!-- Vendor JS Files -->
-<!-- <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script> -->
-<script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- Template Main JS File -->
-<script src="/script_index.js"></script>
-<script src="/script_chat-room.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 

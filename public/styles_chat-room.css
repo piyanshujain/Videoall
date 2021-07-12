@@ -29,7 +29,7 @@ body {
 .settings-tray--right i {
     margin-top: 10px;
     font-size: 25px;
-    color: black;
+    color: white;
     margin-left: 14px;
     transition: 0.3s;
 }
@@ -173,10 +173,10 @@ hr {
     margin-left: 25px;
 }
 
-/* The sidebar menu */
-.sidebar {
+/* The slidebar menu */
+.slidebar {
     height: 100%; /* 100% Full-height */
-    width: 0 !important; /* 0 width - change this with JavaScript */
+    width: 0 ; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
     top: 0;
@@ -184,11 +184,11 @@ hr {
     background-color: #111; /* Black*/
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the slidebar */
   }
   
-  /* The sidebar links */
-  .sidebar a {
+  /* The slidebar links */
+  .slidebar a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -198,12 +198,12 @@ hr {
   }
   
   /* When you mouse over the navigation links, change their color */
-  .sidebar a:hover {
+  .slidebar a:hover {
     color: #f1f1f1;
   }
   
   /* Position and style the close button (top right corner) */
-  .sidebar .closebtn {
+  .slidebar .closebtn {
     position: absolute;
     top: 0;
     right: 25px;
@@ -211,16 +211,16 @@ hr {
     margin-right: 50px;
   }
   
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+/* Style page content - use this if you want to push the page content to the right when you open the slide navigation */
 #main {
     transition: margin-right .5s; /* If you want a transition effect */
     padding: 20px;
   }
   
-  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+  /* On smaller screens, where height is less than 450px, change the style of the slidenav (less padding and a smaller font size) */
   @media screen and (max-height: 450px) {
-    .sidebar {padding-top: 15px;}
-    .sidebar a {font-size: 18px;}
+    .slidebar {padding-top: 15px;}
+    .slidebar a {font-size: 18px;}
   }
 
   .col-me-red{

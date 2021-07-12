@@ -70,9 +70,6 @@ app.get('/', function(req,res){
  res.render('index',{flag,username,id});
 })
 
-app.get("/r", function(req, res){
-  res.render("test");
-});
 
 //Routes for authentication
 app.get("/register", function(req, res){
