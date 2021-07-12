@@ -32,8 +32,6 @@
   <div class="container d-flex align-items-center justify-content-between">
 
     <h1 class="logo"><a href="/">VideoAll<span>.</span></a></h1>
-    <!-- Uncomment below if you prefer to use an image logo -->
-    <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt=""></a>-->
 
     <nav id="navbar" class="navbar">
       <ul>
@@ -58,33 +56,22 @@
   <div class="col-md-4 border-right">
   <div style="color: white; text-align: center;" class="settings-tray">
           <%=me.username%>
-     <span class="settings-tray--right">
-    <!-- <i class="material-icons">cached</i>
-    <i class="material-icons">message</i>
-    <i class="material-icons">menu</i> -->
-    </span>
+     <span class="settings-tray--right"></span>
   </div>
   
-      <div class="roomie">
-
-
-  
-      <% me.rooms.forEach(function(room){ %>
-          
-          <a href="/room/<%= room._id %>">
-          <div class="friend-drawer friend-drawer--onhover">
-              <div class="text">
-                <p > <strong><%= room.title %></strong></p>
-              </div>
-              <span class="time text-muted small"> <%= room.created.toDateString() %></span>
-            </div>
-            </a>
-            <hr>
-      <% }) %>
-
-
-
-  </div>
+          <div class="roomie">
+            <% me.rooms.forEach(function(room){ %>
+                <a href="/room/<%= room._id %>">
+                <div class="friend-drawer friend-drawer--onhover">
+                    <div class="text">
+                      <p > <strong><%= room.title %></strong></p>
+                    </div>
+                    <span class="time text-muted small"> <%= room.created.toDateString() %></span>
+                  </div>
+                  </a>
+                  <hr>
+            <% }) %>
+          </div>
   </div>
 
 
@@ -93,18 +80,15 @@
 <div class="col-md-8">
   <div class="settings-tray">
     <div class="friend-drawer no-gutters friend-drawer--grey">
-    <div class="text">
-      <h6 style="color: white;" class="text-muted"><%=room.created.toDateString()%></h6>
-      <p style="color: white;" ><strong><%=room.title%></strong></p>
-    </div>
-    <span class="settings-tray--right">
-                <i onclick="toggleNav()" class="fas fa-user-friends attendees"></i>
-                <i onclick="copy_link()" onmouseout="outFunc()" class="fas fa-user-plus invite" ></i>
-               <span> <i onclick="startCall()"  class="fas fa-video"></i></span>
-      <!-- <i class="material-icons">cached</i>
-      <i class="material-icons">message</i>
-      <i class="material-icons">menu</i> -->
-    </span>
+        <div class="text">
+          <h6 style="color: white;" class="text-muted"><%=room.created.toDateString()%></h6>
+          <p style="color: white;" ><strong><%=room.title%></strong></p>
+        </div>
+        <span class="settings-tray--right">
+                    <i onclick="toggleNav()" class="fas fa-user-friends attendees"></i>
+                    <i onclick="copy_link()" onmouseout="outFunc()" class="fas fa-user-plus invite" ></i>
+                  <span> <i onclick="startCall()"  class="fas fa-video"></i></span>
+        </span>
     </div>
   </div>
   <div id="mySlidebar" style="margin-top: 80px !important; text-align: center; overflow: auto;" class="slidebar">
@@ -122,8 +106,6 @@
   </div>
   <div class="chat-panel">
           <div class="past-chat">
-
-            
               <% room.chats.forEach(function(chat){ %>
                  <% if(chat.author.id!=me.id){ %>
                   <div class="row no-gutters" style="max-width:700px;">
@@ -135,7 +117,6 @@
                       </div>
                     </div>
                     <%}else{%>
-
                     <div class="row no-gutters" style="max-width: 700px;">
                       <div class="col-md-5 offset-md-9">
                         <div class="chat-bubble chat-bubble--right ">
@@ -145,30 +126,15 @@
                     </div>
                     <%}%>
               <% }) %>
-
-   
-
-
-
-      </div>
+          </div>
     <div class="row">
     <div class="col-12">
-              <form action="/room/<%= room._id %>/chat" method="POST">
-      <div class="chat-box-tray">
-      <!-- <i class="material-icons">sentiment_very_satisfied</i> -->
-
-             
-                  
-                      <input style="margin-left: 10px ;"  type="text" name="text" autocomplete="off" placeholder="Send message to the room" required>
-                  
-                    <button style="align-items: center; border: 0ch;" type="submit"><i class="fa fa-paper-plane" > </i></button>  
-           
-      <!-- <input type="text" placeholder="Type your message here..."> -->
-      <!-- <i class="material-icons">mic</i> -->
-      
-      </div>
-                 
-          </form>
+        <form action="/room/<%= room._id %>" method="POST">
+            <div class="chat-box-tray">
+                <input style="margin-left: 10px ;"  type="text" name="text" autocomplete="off" placeholder="Send message to the room" required>      
+                <button style="align-items: center; border: 0ch;" type="submit"><i class="fa fa-paper-plane" > </i></button>  
+            </div> 
+        </form>
     </div>
     </div>
   </div>

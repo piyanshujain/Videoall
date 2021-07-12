@@ -12,68 +12,65 @@ var peer = new Peer(undefined ,{
   port: 443
 } )
 
-navigator.mediaDevices.getUserMedia({
+navigator.mediaDevices.getUserMedia({                                       //Getting audio and video from the device
   video: true,
   audio: true
 }).then(stream => {
-  myVideoStream = stream;
- addVideoStream(myVideo, stream);
-  addVideoStream(myVideo, stream);
-peer.on('call', call=>{
-  call.answer(stream)
-const video = document.createElement('video')
-call.on('stream' , userVideoStream =>{
-  addVideoStream(video , userVideoStream)
-})
-})
+        myVideoStream = stream;
+        addVideoStream(myVideo, stream);                                     //adding own stream on the video-grid
+        peer.on('call', call=>{
+        call.answer(stream)                                                  //calling user and sending own video as answer
+        const video = document.createElement('video')                        //adding video stream recieved from other person
+            call.on('stream' , userVideoStream =>{
+              addVideoStream(video , userVideoStream)
+            })
+        })
 
-  socket.on('user-connected' , (userId)=>{
-  // connectToNewUser(userId , stream);
-   setTimeout(connectToNewUser,1000,userId,stream)
-  })
+        socket.on('user-connected' , (userId)=>{                             //Connecting the user
+        // connectToNewUser(userId , stream);
+        setTimeout(connectToNewUser,1000,userId,stream)
+        })
 
-  socket.on("will_draw", (data)=> {
-    drawing(data);
-  });
-  socket.on("clear_wb",()=>{
-    ClearWb();
-  })
-  let text = $('input')
-  
-  $('html').keydown((e) =>{
-    if(e.which==13 && text.val().length!==0){
-      var data={
-        message:text.val(),
-        username:username,
-        user_id:user_id
-      }
-      socket.emit('message' , data);
-      text.val('')
-   
-    }
-  })
-  
- 
-  socket.on('createMessage' ,data=>{
-    $('.messages').append('<strong>'+data.username+'</strong>'+'</br>'+data.message+'</br>')
-    scrollToBottom()
-   
-  })
+        let text = $('input')                                                //Taking input from the chat box on enter and if its non-null 
+        $('html').keydown((e) =>{
+          if(e.which==13 && text.val().length!==0){                            
+            var data={
+              message:text.val(),
+              username:username,
+              user_id:user_id
+            }
+            socket.emit('message' , data);                                    // then announce the message to all other users
+            text.val('')
+          }
+        })
+        
+        socket.on('createMessage' ,data=>{                                    //recieving that a message is being announced by someone
+          $('.messages').append('<strong>'+data.username+'</strong>'+'</br>'+data.message+'</br>')   //append message in the chat-box
+          scrollToBottom()
+        
+        })
 
+        socket.on("will_draw", (data)=> {                                     //Function to recieve data that someone has drawn on the whiteboard
+          drawing(data);                                                      //Draw using the same data on own whiteboard
+        });
+        
+        socket.on("clear_wb",()=>{                                            //Function announcing someone cleard the whiteboard
+          ClearWb();                                                          //Clearing own whiteboard
+        })
 
   })
 
-  socket.on('user-disconnected', userId => {
+  socket.on('user-disconnected', userId => {                                  //Disconnecting from the call
     if (peers[userId]) peers[userId].close()
   })
 
-  peer.on('open' , id=>{
+  peer.on('open' , id=>{                                                      //Making connection
   socket.emit('join-room', ROOM_ID, id);
   })
 
 
 
-  const connectToNewUser= (userId , stream)=>{
+  const connectToNewUser= (userId , stream)=>{                                //Function to connect to new user
     const call = peer.call(userId , stream)
     const video = document.createElement('video')
 
@@ -81,24 +78,24 @@ call.on('stream' , userVideoStream =>{
       addVideoStream(video , userVideoStream)
     })
 
-    call.on('close', () => {
+    call.on('close', () => {                                                  //If a user disconnected, so remove it's video
       video.remove()
     })
   
-    peers[userId] = call
+    peers[userId] = call                                                      //Maintaing data of all the users
     
   }
 
-  const addVideoStream=(video,stream)=>{
+  const addVideoStream=(video,stream)=>{                                      //Functoin to add video stream, create an video element and set its source to stream 
     video.srcObject=stream;
     video.addEventListener('loadedmetadata' , ()=>{
       video.play();
     })
-    videoGrid.append(video);
+    videoGrid.append(video);                                                  //then append it at video-grid
     
   }
 
-const scrollToBottom=()=>{
+const scrollToBottom=()=>{                                                   //To ensure that chatbox scrolls on overflowing
   var d=$('.main__chat__window');
   d.scrollTop(d.prop("scrollHeight"));
 }
@@ -108,9 +105,9 @@ const muteUnmute=()=>{
   const enabled=myVideoStream.getAudioTracks()[0].enabled;  //here [0] represents your own audio
   if(enabled){
     myVideoStream.getAudioTracks()[0].enabled = false;
-    setUnmuteButton();
+    setUnmuteButton();                                                      //change the colour of the mute button and name it unmute button
   }else{
-    setMuteButton();
+    setMuteButton();                                                        //Changing from unkmute to mute button
     myVideoStream.getAudioTracks()[0].enabled = true;
   }
 }
@@ -134,13 +131,14 @@ document.querySelector('.main__mute__button').innerHTML=html;
 }
 
 
+//To Play and stop your video
 const playStop=()=>{
   let enabled = myVideoStream.getVideoTracks()[0].enabled;
   if(enabled){
     myVideoStream.getVideoTracks()[0].enabled = false;
-    setPlayVideo()
+    setPlayVideo()                                                                    //Change the stop button to play button
   }else{
-    setStopVideo()
+    setStopVideo()                                                                    //Change the play button to stop button
     myVideoStream.getVideoTracks()[0].enabled = true;
   }
 }
@@ -157,6 +155,6 @@ const setPlayVideo=()=>{
   document.querySelector('.main__video__button').innerHTML = html;
 }
 
-const leavemeet=()=>{
+const leavemeet=()=>{                                                               //If someone clicks on leave button, redirect to room chat page
   window.location.href = "/room/"+ROOM_ID;
 }

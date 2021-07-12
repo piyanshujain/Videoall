@@ -3,18 +3,22 @@ body{
   padding: 0;
 }
 
-
-#video-grid{
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+/*Styling for video*/
 video{
   height: 300px;
   width: 400px;
   object-fit: cover;
   padding: 8px;
 }
+
+
+/*Styling for the general layout of the page*/
+#video-grid{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 
 .main{
   height: 100vh;
@@ -49,7 +53,6 @@ video{
 
 .main__controls__block{
   display: flex;
-
 }
 .main__controls__button{
   display: flex;
@@ -59,7 +62,6 @@ video{
   padding: 10px;
   min-width: 80px;
   cursor: pointer;
-
 }
 
 .main__controls__buttons i{
@@ -109,10 +111,12 @@ overflow-y: scroll;  /*So that messages scroll and do not move out of container*
   list-style: none;
 }
 
+
+
+/*Styling for the buttons depending on their function and instance*/
 .unmute{
   color: red;
 }
-
 .stop{
   color: red;
 }
@@ -122,8 +126,8 @@ overflow-y: scroll;  /*So that messages scroll and do not move out of container*
 
 
 
+/*Styling for the whiteboard and its controls*/
 .whiteboard__controls{
-  
   flex-direction: column;
   display: flex;
   cursor: pointer;

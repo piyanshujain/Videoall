@@ -1,4 +1,5 @@
 
+/*Animation in chat-box on reloading*/
 $( '.friend-drawer--onhover' ).on( 'click',  function() {
   
     $( '.chat-bubble' ).hide('slow').show('slow');
@@ -25,14 +26,15 @@ function toggleNav() {
     document.getElementById("mySlidebar").style.width = "0";
     document.getElementById("main-side").style.marginRight = "0";
   }
-  // Video tutorial/codealong here: https://youtu.be/fCpw5i_2IYU
 
-  function startCall(){
+/* Start the call by redirecting to link of the call*/
+  function startCall(){                                   
     window.location.href = "/"+room_i;
   }
 
 
-  var $temp = $("<input>");
+/*Copy the link user is currently on (meeting chat room) to the clipboard for easy sharing*/
+var $temp = $("<input>");
 var $url = $(location).attr('href');
 const copy_link=()=>{
 $("body").append($temp);
@@ -42,6 +44,7 @@ $temp.remove();
 $('.invite').css("color","green");
 }
 
+/*Change color of the invite icon upon hover out*/
 const outFunc=()=>{
   $('.invite').css("color","white");
 }

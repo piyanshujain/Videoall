@@ -29,9 +29,6 @@
     <div class="container d-flex align-items-center justify-content-between">
 
       <h1 class="logo"><a href="/">VideoAll<span>.</span></a></h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt=""></a>-->
-
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto" href="/">Home</a></li>
@@ -56,63 +53,49 @@
 		<div style="color: white; text-align: center;" class="settings-tray">
             <%=me.username%>
 		   <span class="settings-tray--right">
-			<!-- <i class="material-icons">cached</i>
-			<i class="material-icons">message</i>
-			<i class="material-icons">menu</i> -->
 		  </span>
 		</div>
 		
-        <div class="roomie">
-
-
-		
-        <% me.rooms.forEach(function(room){ %>
-            
-            <a href="/room/<%= room._id %>">
-            <div class="friend-drawer friend-drawer--onhover">
-                <div class="text">
-                  <p > <strong><%= room.title %></strong></p>
-                </div>
-                <span class="time text-muted small"> <%= room.created.toDateString() %></span>
-              </div>
-              </a>
-              <hr>
-        <% }) %>
-
-
-
-    </div>
+          <div class="roomie">
+                <% me.rooms.forEach(function(room){ %>
+                    <a href="/room/<%= room._id %>">
+                    <div class="friend-drawer friend-drawer--onhover">
+                        <div class="text">
+                          <p > <strong><%= room.title %></strong></p>
+                        </div>
+                        <span class="time text-muted small"> <%= room.created.toDateString() %></span>
+                      </div>
+                      </a>
+                      <hr>
+                <% }) %>
+          </div>
 	  </div>
 
     
-	  <div class="col-md-8">
-		
-		  <div class="row">
-			<div class="col-12">
-             <div class="chat-panel">
-               <div class="past-chat"></div>
-             </div>
-             <div class="row">
-               <div class="col-12">
-                 <div style="background-color: white;" class="chat-box-tray"></div>
-               </div>
-             </div>
-			</div>
-		  </div>
-		</div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-12">
+                <div class="chat-panel">
+                  <div class="past-chat"></div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <div style="background-color: white;" class="chat-box-tray"></div>
+                  </div>
+                </div>
+          </div>
+        </div>
+      </div>
 	  </div>
 	</div>
   </div>
 
   <!-- ======= Footer ======= -->
   <footer id="footer" style="background-color: #f1f6fe; padding-bottom: 0 !important;">
-
-
     <div class="container py-4" style="margin-top: auto; margin-bottom: auto; background-color:#f1f6fe; ">
       <div class="copyright" style=" background-color:#f1f6fe; color: #444444;">
         &copy; Copyright <strong><span>VideoAll</span></strong>. All Rights Reserved
       </div>
-      
     </div>
   </footer><!-- End Footer -->
 
