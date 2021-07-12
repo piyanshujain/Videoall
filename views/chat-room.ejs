@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title><%=room.title%>></title>
+  <title><%=room.title%></title>
   <meta content="" name="description">
   <meta content="" name="keywords">
     <link rel="stylesheet" href="/styles_chat-room.css">  
@@ -98,7 +98,8 @@
       <p style="color: white;" ><strong><%=room.title%></strong></p>
     </div>
     <span class="settings-tray--right">
-                <i onclick="toggleNav()" class="fas fa-user-friends"></i>
+                <i onclick="toggleNav()" class="fas fa-user-friends attendees"></i>
+                <i onclick="copy_link()" onmouseout="outFunc()" class="fas fa-user-plus invite" ></i>
                <span> <i onclick="startCall()"  class="fas fa-video"></i></span>
       <!-- <i class="material-icons">cached</i>
       <i class="material-icons">message</i>
