@@ -55,7 +55,7 @@ call.on('stream' , userVideoStream =>{
   
  
   socket.on('createMessage' ,data=>{
-    $('.messages').append(data.username+"  "+data.message)
+    $('.messages').append('<strong>'+data.username+'</strong>'+'</br>'+data.message+'</br>')
     scrollToBottom()
    
   })
