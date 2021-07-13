@@ -12,6 +12,15 @@ var peer = new Peer(undefined ,{
   port: 443
 } )
 
+if(username=="guest-user"){                                                 //If someone isn't signed in and enters the meeting, ask for a username, if NULL then give guest-user
+  if((username = prompt('What is your name?',"guest-user"))){
+
+  }else{
+    username="guest-user"
+  }
+  
+}
+
 navigator.mediaDevices.getUserMedia({                                       //Getting audio and video from the device
   video: true,
   audio: true
