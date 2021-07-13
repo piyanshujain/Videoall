@@ -41,4 +41,4 @@ You can now visit port 3030 of your local machine to view running Videoall local
 </li>
 </ol>
 </br>
-NOTE: This currently runs only on https.
+NOTE: This currently runs only on https on Heroku.
